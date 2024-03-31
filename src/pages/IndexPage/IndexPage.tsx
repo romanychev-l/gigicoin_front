@@ -2,6 +2,7 @@ import './IndexPage.css';
 
 import type { FC } from 'react';
 import { useState, useEffect } from 'react';
+import { useInitData } from '@tma.js/sdk-react';
 
 import { Link } from '../../components/Link';
 import { Page } from '../../components/Page';
@@ -9,9 +10,16 @@ import { routes } from '../../navigation/routes.ts';
 
 export const IndexPage: FC = () => {
   const [number, setNumber] = useState(null);
+  const initData = useInitData();
 
   useEffect(() => {
-    fetch('https://pmpu.site/gigicoin/get_steps?tg_id=248603604')
+    const userId = initData?.user?.id;
+    if (!userId) {
+      return;
+    }
+    const url = `https://pmpu.site/gigicoin/get_steps?tg_id=${userId.toString()}`;
+
+    fetch(url)
       .then(response => response.json())
       .then(data => setNumber(data.steps));
   }, []);
