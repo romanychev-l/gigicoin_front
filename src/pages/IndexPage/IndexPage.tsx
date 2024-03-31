@@ -10,22 +10,18 @@ import { routes } from '../../navigation/routes.ts';
 
 export const IndexPage: FC = () => {
   const [number, setNumber] = useState(null);
+  
   const initData = useInitData();
 
   useEffect(() => {
-    const userId = initData?.user?.id;
-    if (!userId) {
-      return;
-    }
-    const url = `https://pmpu.site/gigicoin/get_steps?tg_id=${userId.toString()}`;
-
-    fetch(url)
-      .then(response => response.json())
-      .then(data => setNumber(data.steps));
-  }, []);
+    if(initData)
+      fetch('https://pmpu.site/gigicoin/get_steps?tg_id=' + initData.user?.id.toString())
+        .then(response => response.json())
+        .then(data => setNumber(data.steps));
+  }, [initData]);
 
   return (
-    <Page title="Home">
+    <Page title="Home 1">
       {/* <p>
         This page is a home page in this boilerplate. You can use the links below to visit other
         pages with their own functionality.
